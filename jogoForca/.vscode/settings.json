@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "poo2/bin/python3",
+
+    //stop having annoying unresolved-import issues
+    "python.analysis.disabled": [
+        "unresolved-import"
+    ],
+}
