@@ -1,0 +1,5 @@
+Anthony Bernardo Kamers - 19204700
+
+Não houve grandes dificuldades para realizar o jogo.
+
+A parte mais "chata" foi fazer o web scrapping (para pegar uma palavra aleatória em português), que nunca tinha feito com python, o resto foi só adaptar à "versão" 1.0
