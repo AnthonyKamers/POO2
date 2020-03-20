@@ -3,25 +3,49 @@
 print("Banco Tatu")
 
 class ContaCorrente:
-    def __init__(self, titulares=[], saldo=0, extrato=[], especial = False, poupanca = False):
+    def __init__(self, titulares=[], saldo = 0, extrato=[]):
         self.titulares = titulares #list[nome, telefone]
         self.saldo = saldo
         self.extrato = extrato
-        self.especial = especial
-        self.poupanca = poupanca
+
+        self.especial = False
+        self.poupanca = False
+        self.limiteEspecial = 0
+        self.limiteUsado = 0
+        self.rendimentoPoupanca = 0 #porcentagem mes
 
         self.dic = {}
 
     #setters
-    def especial(self, especial1, valorEspecial):
+    def especial1(self, especial1 = False, limite = 0):
         self.especial = especial1
 
-        self.contaEspecial.addLimiteEspecial(valorEspecial)
+        if(especial1):
+            self.limiteEspecial = limite
+        else:
+            self.limiteEspecial = 0
 
-        print(self.limiteEspecial)
 
-    def poupanca(self, poupanca1):
+    def poupanca1(self, poupanca1, rendimentoMensal):
         self.poupanca = poupanca1
+
+        if(poupanca1):
+            self.rendimentoPoupanca = rendimentoMensal
+        else:
+            self.rendimentoPoupanca = 0
+
+    def addRendimentoPoupanca(self): #fazer rotina q repita a cada mês
+        if(self.poupanca):
+            x = (self.saldo * self.rendimentoPoupanca) / 100
+            self.saldo += x
+
+            self.dic['tipo'] = "Rendimento"
+            self.dic['valor'] = x
+            self.extrato.append(self.dic.copy())
+            self.dic.clear()
+
+        else:
+            print('Não tem rendimento de poupança')
 
     def addTitular(self, nome, telefone):
         self.dic['nome'] = nome
@@ -32,7 +56,12 @@ class ContaCorrente:
 
     #methods
     def verSaldo(self):
-        print(f'Seu saldo é de: R${0:.3g}' .format(self.saldo))
+        print('Seu saldo é de: R${0:.3g}' .format(self.saldo))
+
+        if(self.limiteEspecial):
+            print('Seu limite especial é de: R${0:.3g}' .format(self.limiteEspecial))
+            print('Seu limite usado é de: R${0:.3g}' .format(self.limiteUsado))
+            print('Seu limite a usar é de: R${0:.3g}' .format(self.limiteEspecial - self.limiteUsado))
 
     def verExtrato(self):
         for i in self.extrato:
@@ -42,17 +71,28 @@ class ContaCorrente:
             elif i['tipo'] == "Deposito":
                 print('+ R${0:.3g}' .format(i['valor']))
 
-        print(f'Saldo Final: R${0:.3g}' .format(self.saldo))
+            elif i['tipo'] == "Rendimento":
+                print('+ R${0:.3g} - Rendimento' .format(i['valor']))
+
+        print('Saldo Final: R${0:.3g}' .format(self.saldo))
 
     def verTitulares(self):
         for i in self.titulares:
             print(f'Nome: {i["nome"]} | Telefone: {i["telefone"]}')
 
     def saque(self, valor):
-        if self.saldo < valor:
-            print("Você não tem saldo suficiente!")
+        if((not self.especial and self.saldo < valor) or (self.especial and (self.saldo + (self.limiteEspecial - self.limiteUsado)) < valor)):
+            print("Você não tem saldo suficiente")
         else:
-            self.saldo -= valor
+            if(self.saldo > valor):
+                self.saldo -= valor
+            
+            else:
+                if(self.especial and (self.saldo + (self.limiteEspecial - self.limiteUsado)) > valor):
+                    limiteUsado = (valor - self.saldo)
+                    self.limiteUsado += limiteUsado
+                    self.saldo -= valor
+            
             self.dic['tipo'] = "Saque"
             self.dic['valor'] = valor
             self.extrato.append(self.dic.copy())
@@ -61,23 +101,29 @@ class ContaCorrente:
     
     def deposito(self, valor):
         self.saldo += valor
+
+        if(self.especial and self.limiteUsado != 0):
+            if (self.limiteUsado + valor > self.limiteEspecial):
+                self.limiteUsado = 0
+            else:
+                self.limiteUsado += valor
+
         self.dic['tipo'] = "Deposito"
         self.dic['valor'] = valor
         self.extrato.append(self.dic.copy())
         self.dic.clear()
         print('Depósito de R${0:.3g} efetuado com sucesso' .format(valor))
 
-# class ContaEspecial(ContaCorrente):
-#     def addLimiteEspecial(self, limite):
-#         self.limiteEspecial = limite
 
-
-anthony = ContaCorrente()
+anthony = ContaCorrente(saldo = 150)
 anthony.addTitular("Anthony", "48984685758")
-anthony.verTitulares()
 anthony.verSaldo()
-anthony.deposito(250)
-anthony.verExtrato()
-anthony.saque(300)
-anthony.saque(100)
+anthony.especial1(True, 350)
+anthony.verSaldo()
+anthony.saque(400)
+anthony.verSaldo()
+anthony.deposito(300)
+anthony.verSaldo()
+anthony.poupanca1(True, 1)
+anthony.addRendimentoPoupanca()
 anthony.verExtrato()
