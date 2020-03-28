@@ -1,4 +1,5 @@
 #Anthony Bernardo Kamers - 19204700
+#Como deve ter limite especial e poupança, fiz métodos separados para cada um. Ao fazer um saque ou depósito e tenha usado limite especial (se for esse tipo de conta), é feita a verificação e adicionado a cada campo
 
 print("Banco Tatu")
 
@@ -115,15 +116,15 @@ class ContaCorrente:
         print('Depósito de R${0:.3g} efetuado com sucesso' .format(valor))
 
 
-anthony = ContaCorrente(saldo = 150)
-anthony.addTitular("Anthony", "48984685758")
-anthony.verSaldo()
-anthony.especial1(True, 350)
-anthony.verSaldo()
-anthony.saque(400)
-anthony.verSaldo()
-anthony.deposito(300)
-anthony.verSaldo()
-anthony.poupanca1(True, 1)
-anthony.addRendimentoPoupanca()
-anthony.verExtrato()
+# anthony = ContaCorrente(saldo = 150)
+# anthony.addTitular("Anthony", "48984685758")
+# anthony.verSaldo()
+# anthony.especial1(True, 350)
+# anthony.verSaldo()
+# anthony.saque(400)
+# anthony.verSaldo()
+# anthony.deposito(300)
+# anthony.verSaldo()
+# anthony.poupanca1(True, 1)
+# anthony.addRendimentoPoupanca()
+# anthony.verExtrato()
