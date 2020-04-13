@@ -27,6 +27,8 @@ tipoJogo = int(input("Você deseja jogar sozinho(1) ou multiplayer(2): "))
 if(tipoJogo == 1):
     categoria = int(input("Categoria: \n 0 - Todas \n 2 - alimentos \n 3 - animais \n 4 - cores \n 5 - corpo humano \n 6 - educação \n 7 - família \n 8 - figuras geométricas \n : "))
 
+    listaCategoria = ['Todas', 'Alimentos', 'Animais', 'Cores', 'Corpo Humano', 'Educação', 'Família', 'Figuras Geométricas']
+
     while(categoria == 1 or categoria == 9):
         categoria = int(input("Categoria: \n 0 - Todas \n 2 - alimentos \n 3 - animais \n 4 - cores \n 5 - corpo humano \n 6 - educação \n 7 - família \n 8 - figuras geométricas \n : "))
 
